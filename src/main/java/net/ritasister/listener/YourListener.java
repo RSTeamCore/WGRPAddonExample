@@ -16,6 +16,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class YourListener implements Listener {
 
+    /**
+     * Examples using on another listeners with WorldGuardRegionProtect API
+     */
     @EventHandler
     private void onBreakBlock(@NotNull BlockBreakEvent event) {
         WorldGuardRegionProtect api = WorldGuardRegionProtectProvider.get();
@@ -35,9 +38,9 @@ public class YourListener implements Listener {
         Location from = event.getFrom();
         Location to = event.getTo();
 
-        if(api.getRegionAdapter().checkStandingRegion(to)) {
+        if(api.getRegionAdapter().checkStandingRegion(to) && api.getRegionAdapter().checkStandingRegion(from)) {
             player.sendMessage(Component.text("You are joining this region!"));
-        } else if(api.getRegionAdapter().checkStandingRegion(to)) {
+        } else {
             player.sendMessage(Component.text("You are leave from this region!"));
         }
     }
@@ -45,10 +48,11 @@ public class YourListener implements Listener {
     @EventHandler
     private void onEntityDamage(@NotNull EntityDamageByEntityEvent event) {
         WorldGuardRegionProtect api = WorldGuardRegionProtectProvider.get();
-        Player damager = (Player) event.getDamager();
-        if(api.getRegionAdapter().checkStandingRegion(damager)) {
-            event.setCancelled(true);
-            damager.sendMessage(Component.text("You can't harm anyone!!! :<"));
+        if(event.getDamager() instanceof Player damager) {
+            if(api.getRegionAdapter().checkStandingRegion(damager.getLocation())) {
+                event.setCancelled(true);
+                damager.sendMessage(Component.text("You can't harm anyone!!! :<"));
+            }
         }
     }
 }
