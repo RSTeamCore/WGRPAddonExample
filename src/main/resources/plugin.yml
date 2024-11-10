@@ -1,6 +1,8 @@
 name: WGRPAddonExample
 version: 0.0.1
 main: net.ritasister.WGRPAddonExample
-depend: [ WorldGuard ]
+depend: [ WorldGuard, WorldGuardRegionProtect ]
+loadbefore:
+  - WorldGuardRegionProtect
 website: https://github.com/RSTeamCore/WorldGuardRegionProtect
 api-version: "1.21"

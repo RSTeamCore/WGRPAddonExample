@@ -29,7 +29,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 
     //WGRP api
-    implementation("net.ritasister:wgrp-api:1.2.1.21")
+    compileOnly("net.ritasister:wgrp-api:1.5.21")
 
     //Plugins
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.1.0-SNAPSHOT")
