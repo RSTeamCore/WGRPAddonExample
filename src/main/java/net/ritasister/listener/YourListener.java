@@ -1,6 +1,5 @@
 package net.ritasister.listener;
 
-import com.sk89q.worldedit.regions.Region;
 import net.kyori.adventure.text.Component;
 import net.ritasister.WGRPAddonExample;
 import net.ritasister.wgrp.api.WorldGuardRegionProtect;
@@ -12,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class YourListener implements Listener {
@@ -30,23 +28,19 @@ public class YourListener implements Listener {
     private void onBreakBlock(@NotNull BlockBreakEvent event) {
         Player player = event.getPlayer();
         Location location = event.getBlock().getLocation();
-
         RegionAdapterManager regionAdapterManager = plugin.getWgrpApi().getRegionAdapter();
-        WorldGuardRegionProtect provider = WorldGuardRegionProtectProvider.get();
 
-        if(provider.getRegionAdapter().checkStandingRegion(location)) {
+        if(regionAdapterManager.checkStandingRegion(location)) {
             player.sendMessage(Component.text("You can't break block here"));
             event.setCancelled(true);
         }
+
     }
 
     @EventHandler
     private void onEntityDamage(@NotNull EntityDamageByEntityEvent event) {
         if(event.getDamager() instanceof Player damager) {
             RegionAdapterManager regionAdapterManager = plugin.getWgrpApi().getRegionAdapter();
-            if(regionAdapterManager == null) {
-                return;
-            }
 
             if(regionAdapterManager.checkStandingRegion(damager.getLocation())) {
                 event.setCancelled(true);
